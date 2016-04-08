@@ -1,3 +1,5 @@
+#include <cmath>
+
 #ifndef GPS_DATA_TYPES_H
 #define GPS_DATA_TYPES_H
 
@@ -42,6 +44,8 @@ class Latitude{
         */
         Latitude(float t_decimal_value){m_validity = m_convertFromDecimal(t_decimal_value);}
 
+        ~Latitude(){}
+
         //getters
 
         /**
@@ -82,9 +86,37 @@ class Latitude{
 
     private:
         //Methods
-        bool m_convertFromDecimal(float t_decimal_coordinate);
-        bool m_validate();
+        bool m_convertFromDecimal(float t_decimal_coordinate)
+        {
+            m_degrees = (int8_t)trunc(t_decimal_coordinate);
+            temp_minutes = (t_decimal_coordinate % m_degrees) * 60;
+            m_minutes = (int8_t)trunc(temp_minutes);
+            temp_seconds = (t_decimal_coordinate % m_minutes) * 60;
+            m_seconds = (int8_t)trunc(temp_seconds);
 
+            if(t_decimal_coordinate > 0)
+            {
+                m_cardinal_point = CardinalPoint.NORTH;
+            }
+            else
+            {
+                m_cardinal_point = CardinalPoint.SOUTH;
+            }
+
+            return m_validate();
+        }
+
+        bool m_validate()
+        {
+            bool isValid = false;
+            float angle = m_degrees + (m_minutes / 60) + (m_seconds / 3600);
+
+            if((angle <= 90.0)&&((m_cardinal_point == CardinalPoint.NORTH)||(m_cardinal_point == CardinalPoint.SOUTH)))
+            {
+                isValid = true;
+            }
+            return isValid;
+        }
         //Attributes
         int8_t m_degrees;
         int8_t m_minutes;
@@ -123,6 +155,8 @@ class Longitude{
         */
         Longitude(float t_decimal_value){m_validity = m_convertFromDecimal(t_decimal_value);}
 
+        ~Longitude(){}
+
         //getters
 
         /**
@@ -153,7 +187,15 @@ class Longitude{
         * return the decimal value of the longitude
         * @return the longitude as a decimal value
         */
-        float asDecimal();
+        float asDecimal()
+        {
+            float decimal_value = m_degrees + (m_minutes / 60) + (m_seconds / 3600);
+            if(m_cardinal_point == CardinalPoint.WEST)
+            {
+                decimal_value = decimal_value * -1;
+            }
+            return decimal_value;
+        }
 
         /**
         * Indicate if the current longitude is valid
@@ -165,6 +207,21 @@ class Longitude{
         //Methods
         bool m_convertFromDecimal(float t_decimal_coordinate)
         {
+            m_degrees = (int8_t)trunc(t_decimal_coordinate);
+            temp_minutes = (t_decimal_coordinate % m_degrees) * 60;
+            m_minutes = (int8_t)trunc(temp_minutes);
+            temp_seconds = (t_decimal_coordinate % m_minutes) * 60;
+            m_seconds = (int8_t)trunc(temp_seconds);
+
+            if(t_decimal_coordinate > 0)
+            {
+                m_cardinal_point = CardinalPoint.EAST;
+            }
+            else
+            {
+                m_cardinal_point = CardinalPoint.WEST;
+            }
+
             return m_validate();
         }
 
@@ -173,7 +230,7 @@ class Longitude{
             bool isValid = false;
             float angle = m_degrees + (m_minutes / 60) + (m_seconds / 3600);
 
-            if((angle < 180.0)&&((m_cardinal_point == CardinalPoint.WEST)||(m_cardinal_point == CardinalPoint.EAST)))
+            if((angle <= 180.0)&&((m_cardinal_point == CardinalPoint.WEST)||(m_cardinal_point == CardinalPoint.EAST)))
             {
                 isValid = true;
             }
