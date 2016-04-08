@@ -17,14 +17,14 @@ enum CardinalPoint{
 * a class that represent a latitude.
 */
 class Latitude{
-	public:
-		/**
-		* a constructor
-		* @param t_degrees degrees of the coordinate
-		* @param t_minutes minutes of the coordinate
-		* @param t_seconds seconds of the coordinate
-		* @param t_cardinal_point cardinal point of the coordinate
-		*/
+    public:
+        /**
+        * a constructor
+        * @param t_degrees degrees of the latitude
+        * @param t_minutes minutes of the latitude
+        * @param t_seconds seconds of the latitude
+        * @param t_cardinal_point cardinal point of the latitude
+        */
         Latitude(int8_t t_degrees, int8_t t_minutes, int8_t t_seconds, CardinalPoint t_cardinal_point): m_degrees(t_degrees),
                                                                                                         m_minutes(t_minutes),
                                                                                                         m_seconds(t_seconds),
@@ -33,66 +33,14 @@ class Latitude{
             m_validity = m_validate();
         }
 
-		/**
-		* a constructor
-		* @param t_degrees degrees of the coordinate
-		* @param t_minutes minutes of the coordinate
-		* @param t_seconds seconds of the coordinate
-		* @param t_cardinal_point cardinal point of the coordinate
-		*/
-        Latitude(float t_decimal_value){ m_validity = m_convertFromDecimal(t_decimal_value);}
-
-		int8_t getDegrees();
-		int8_t getMinutes();
-		int8_t getSeconds();
-		CardinalPoint getCardinalPoint();
-        void setLatitude(int8_t t_degrees, int8_t t_minutes, int8_t t_seconds, CardinalPoint t_cardinal_point);
-        void setLatitude(float t_latitude_decimal);
-
-		float asDecimal();
-        bool isValid();
-	private:
-        //Methods
-        bool m_convertFromDecimal(float t_decimal_coordinate);
-        bool m_validate();
-
-        //Attributes
-		int8_t m_degrees;
-		int8_t m_minutes;
-		int8_t m_seconds;
-		CardinalPoint m_cardinal_point;
-
-        bool m_validity;
-};
-
-/**
-* a class that represent a latitude.
-*/
-class Longitude{
-    public:
         /**
         * a constructor
-        * @param t_degrees degrees of the coordinate
-        * @param t_minutes minutes of the coordinate
-        * @param t_seconds seconds of the coordinate
-        * @param t_cardinal_point cardinal point of the coordinate
+        * @param t_degrees degrees of the latitude
+        * @param t_minutes minutes of the latitude
+        * @param t_seconds seconds of the latitude
+        * @param t_cardinal_point cardinal point of the latitude
         */
-        Longitude(int8_t t_degrees, int8_t t_minutes, int8_t t_seconds, CardinalPoint t_cardinal_point): m_degrees(t_degrees),
-                                                                                                        m_minutes(t_minutes),
-                                                                                                        m_seconds(t_seconds),
-                                                                                                        m_cardinal_point(t_cardinal_point)
-        {
-            m_validity = m_validate();
-        }
-
-        /**
-        * a constructor
-        * @param t_degrees degrees of the coordinate
-        * @param t_minutes minutes of the coordinate
-        * @param t_seconds seconds of the coordinate
-        * @param t_cardinal_point cardinal point of the coordinate
-        */
-        Longitude(float t_decimal_value){m_validity = m_convertFromDecimal(t_decimal_value);}
+        Latitude(float t_decimal_value){m_validity = m_convertFromDecimal(t_decimal_value);}
 
         //getters
 
@@ -120,16 +68,117 @@ class Longitude{
         */
         CardinalPoint getCardinalPoint(){return m_cardinal_point;}
 
-        //setters
-        void setLatitude(int8_t t_degrees, int8_t t_minutes, int8_t t_seconds, CardinalPoint t_cardinal_point);
-        void setLatitude(float t_latitude_decimal);
-
+        /**
+        * return the decimal value of the latitude
+        * @return the latitude as a decimal value
+        */
         float asDecimal();
+
+        /**
+        * Indicate if the current latitude is valid
+        * @return true if valid, false otherwise
+        */
         bool isValid(){return m_validity;}
+
     private:
         //Methods
         bool m_convertFromDecimal(float t_decimal_coordinate);
         bool m_validate();
+
+        //Attributes
+        int8_t m_degrees;
+        int8_t m_minutes;
+        int8_t m_seconds;
+        CardinalPoint m_cardinal_point;
+
+        bool m_validity;
+};
+
+/**
+* a class that represent a longitude.
+*/
+class Longitude{
+    public:
+        /**
+        * a constructor
+        * @param t_degrees degrees of the longitude
+        * @param t_minutes minutes of the longitude
+        * @param t_seconds seconds of the longitude
+        * @param t_cardinal_point cardinal point of the longitude
+        */
+        Longitude(int8_t t_degrees, int8_t t_minutes, int8_t t_seconds, CardinalPoint t_cardinal_point): m_degrees(t_degrees),
+                                                                                                        m_minutes(t_minutes),
+                                                                                                        m_seconds(t_seconds),
+                                                                                                        m_cardinal_point(t_cardinal_point)
+        {
+            m_validity = m_validate();
+        }
+
+        /**
+        * a constructor
+        * @param t_degrees degrees of the longitude
+        * @param t_minutes minutes of the longitude
+        * @param t_seconds seconds of the longitude
+        * @param t_cardinal_point cardinal point of the longitude
+        */
+        Longitude(float t_decimal_value){m_validity = m_convertFromDecimal(t_decimal_value);}
+
+        //getters
+
+        /**
+        * Get the degrees of the longitude
+        * @return the degrees of the longitude
+        */
+        int8_t getDegrees(){return m_degrees;}
+
+        /**
+        * Get the minutes of the longitude
+        * @return the minutes of the longitude
+        */
+        int8_t getMinutes(){return m_minutes;}
+
+        /**
+        * Get the seconds of the longitude
+        * @return the seconds of the longitude
+        */
+        int8_t getSeconds(){return m_seconds;}
+
+        /**
+        * Get the cardinal point of the longitude
+        * @return the cardinal point of the longitude
+        */
+        CardinalPoint getCardinalPoint(){return m_cardinal_point;}
+
+        /**
+        * return the decimal value of the longitude
+        * @return the longitude as a decimal value
+        */
+        float asDecimal();
+
+        /**
+        * Indicate if the current longitude is valid
+        * @return true if valid, false otherwise
+        */
+        bool isValid(){return m_validity;}
+
+    private:
+        //Methods
+        bool m_convertFromDecimal(float t_decimal_coordinate)
+        {
+            return m_validate();
+        }
+
+        bool m_validate()
+        {
+            bool isValid = false;
+            float angle = m_degrees + (m_minutes / 60) + (m_seconds / 3600);
+
+            if((angle < 180.0)&&((m_cardinal_point == CardinalPoint.WEST)||(m_cardinal_point == CardinalPoint.EAST)))
+            {
+                isValid = true;
+            }
+            return isValid;
+        }
 
         //Attributes
         int8_t m_degrees;
