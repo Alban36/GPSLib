@@ -10,12 +10,19 @@ TARGET = GPSLib
 TEMPLATE = lib
 
 DEFINES += GPSLIB_LIBRARY
+QMAKE_CXXFLAGS += -std=c++0x
 
-SOURCES += gpslib.cpp
+SOURCES += gpslib.cpp \
+    gpslib_latitude.cpp \
+    gpslib_longitude.cpp \
+    gpslib_coordinate.cpp
 
 HEADERS += gpslib.h\
         GPSLib_global.h \
-    gps_data_types.h
+    gpslib_data_types.h \
+    gpslib_latitude.h \
+    gpslib_longitude.h \
+    gpslib_coordinate.h
 
 symbian {
     MMP_RULES += EXPORTUNFROZEN
