@@ -1,5 +1,6 @@
 #include "gpslib_latitude.h"
 #include "gpslib_longitude.h"
+#include <memory>
 
 #ifndef GPSLIB_COORDINATE_H
 #define GPSLIB_COORDINATE_H
@@ -11,27 +12,27 @@ namespace GPSLib{
 */
 class Coordinate{
     public:
-        Coordinate(Latitude t_latitude, Longitude t_longitude);
+        Coordinate(Latitude* const t_latitude, Longitude* const t_longitude);
         Coordinate(float t_latitude, float t_longitude);
-        Coordinate(const Coordinate* t_coordinate_point);
+        Coordinate(Coordinate* const t_coordinate_point);
 
-        Latitude operator=(const Coordinate* t_coordinate_point);
+        //Latitude operator=(const Coordinate* t_coordinate_point);
 
         //setters
-        void setLatitude(Latitude t_latitude);
-        void setLongitude(Longitude t_longitude);
+        void setLatitude(Latitude* const t_latitude);
+        void setLongitude(Longitude* const t_longitude);
 
         //getters
-        Latitude getLatitude();
-        Longitude getLongitude();
+        Latitude* getLatitude();
+        Longitude* getLongitude();
 
         //checker
         bool isValid();
 
     private:
         //Attributes
-        Latitude m_latitude;
-        Longitude m_longitude;
+        std::shared_ptr<Latitude> m_latitude;
+        std::shared_ptr<Longitude> m_longitude;
 };
 
 }
