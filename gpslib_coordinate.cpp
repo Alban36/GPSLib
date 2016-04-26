@@ -16,7 +16,7 @@ GPSLib::Coordinate::Coordinate(Latitude* const t_latitude, Longitude* const t_lo
 * @param t_latitude a decimal corresponding to the latitude
 * @param t_longitude a decimal class corresponding to the longitude
 */
-GPSLib::Coordinate::Coordinate(float t_latitude, float t_longitude)
+GPSLib::Coordinate::Coordinate(double t_latitude, double t_longitude)
 {
     m_latitude.reset(new Latitude(t_latitude));
     m_longitude.reset(new Longitude(t_longitude));

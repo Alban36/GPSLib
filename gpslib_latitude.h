@@ -13,7 +13,7 @@ namespace GPSLib{
 class Latitude{
     public:
         Latitude(int8_t t_degrees, int8_t t_minutes, int8_t t_seconds, CardinalPoint t_cardinal_point);
-        Latitude(float t_decimal_value);
+        Latitude(double t_decimal_value);
 
         ~Latitude();
 
@@ -24,14 +24,14 @@ class Latitude{
         CardinalPoint getCardinalPoint();
 
         //converter
-        float asDecimal();
+        double asDecimal();
 
         //validity check
         bool isValid();
 
     private:
         //Methods
-        bool m_convertFromDecimal(float t_decimal_coordinate);
+        bool m_convertFromDecimal(double t_decimal_coordinate);
         bool m_validate();
         //Attributes
         int8_t m_degrees;

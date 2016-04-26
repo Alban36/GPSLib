@@ -23,7 +23,7 @@ GPSLib::Longitude::Longitude(int8_t t_degrees, int8_t t_minutes, int8_t t_second
 * @param t_seconds seconds of the longitude
 * @param t_cardinal_point cardinal point of the longitude
 */
-GPSLib::Longitude::Longitude(float t_decimal_value){m_validity = m_convertFromDecimal(t_decimal_value);}
+GPSLib::Longitude::Longitude(double t_decimal_value){m_validity = m_convertFromDecimal(t_decimal_value);}
 
 GPSLib::Longitude::~Longitude(){}
 
@@ -57,9 +57,9 @@ GPSLib::CardinalPoint GPSLib::Longitude::getCardinalPoint(){return m_cardinal_po
 * return the decimal value of the longitude
 * @return the longitude as a decimal value
 */
-float GPSLib::Longitude::asDecimal()
+double GPSLib::Longitude::asDecimal()
 {
-    float decimal_value = m_degrees + (m_minutes / 60) + (m_seconds / 3600);
+    double decimal_value = m_degrees + (m_minutes / 60) + (m_seconds / 3600);
     if(m_cardinal_point == GPSLib::WEST)
     {
         decimal_value = decimal_value * -1;
@@ -74,12 +74,12 @@ float GPSLib::Longitude::asDecimal()
 bool GPSLib::Longitude::isValid(){return m_validity;}
 
 
-bool GPSLib::Longitude::m_convertFromDecimal(float t_decimal_coordinate)
+bool GPSLib::Longitude::m_convertFromDecimal(double t_decimal_coordinate)
 {
     m_degrees = (int8_t)trunc(t_decimal_coordinate);
-    float temp_minutes = (t_decimal_coordinate - m_degrees) * 60;
+    double temp_minutes = (t_decimal_coordinate - m_degrees) * 60;
     m_minutes = (int8_t)trunc(temp_minutes);
-    float temp_seconds = (t_decimal_coordinate - m_minutes) * 60;
+    double temp_seconds = (t_decimal_coordinate - m_minutes) * 60;
     m_seconds = (int8_t)trunc(temp_seconds);
 
     if(t_decimal_coordinate > 0)
@@ -97,7 +97,7 @@ bool GPSLib::Longitude::m_convertFromDecimal(float t_decimal_coordinate)
 bool GPSLib::Longitude::m_validate()
 {
     bool isValid = false;
-    float angle = m_degrees + (m_minutes / 60) + (m_seconds / 3600);
+    double angle = m_degrees + (m_minutes / 60) + (m_seconds / 3600);
 
     if((angle <= 180.0)&&((m_cardinal_point == GPSLib::WEST)||(m_cardinal_point == GPSLib::EAST)))
     {

@@ -13,7 +13,7 @@ namespace GPSLib{
 class Coordinate{
     public:
         Coordinate(Latitude* const t_latitude, Longitude* const t_longitude);
-        Coordinate(float t_latitude, float t_longitude);
+        Coordinate(double t_latitude, double t_longitude);
         Coordinate(Coordinate* const t_coordinate_point);
 
         //Latitude operator=(const Coordinate* t_coordinate_point);

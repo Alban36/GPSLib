@@ -19,7 +19,7 @@ GPSLib::Latitude::Latitude(int8_t t_degrees, int8_t t_minutes, int8_t t_seconds,
 * a constructor
 * @param t_decimal_value a decimal value representing a latitude
 */
-GPSLib::Latitude::Latitude(float t_decimal_value){m_validity = m_convertFromDecimal(t_decimal_value);}
+GPSLib::Latitude::Latitude(double t_decimal_value){m_validity = m_convertFromDecimal(t_decimal_value);}
 
 GPSLib::Latitude::~Latitude(){}
 
@@ -53,7 +53,7 @@ GPSLib::CardinalPoint GPSLib::Latitude::getCardinalPoint(){return m_cardinal_poi
 * return the decimal value of the latitude
 * @return the latitude as a decimal value
 */
-float GPSLib::Latitude::asDecimal()
+double GPSLib::Latitude::asDecimal()
 {
     return 0.0;
 }
@@ -65,15 +65,15 @@ float GPSLib::Latitude::asDecimal()
 bool GPSLib::Latitude::isValid(){return m_validity;}
 
 
-bool GPSLib::Latitude::m_convertFromDecimal(float t_decimal_coordinate)
+bool GPSLib::Latitude::m_convertFromDecimal(double t_decimal_coordinate)
 {
     m_degrees = (int8_t)trunc(t_decimal_coordinate);
-    float temp_minutes = (t_decimal_coordinate - (float)m_degrees) * 60;
+    double temp_minutes = (t_decimal_coordinate - (double)m_degrees) * 60;
     m_minutes = (int8_t)trunc(temp_minutes);
-    float temp_seconds = (t_decimal_coordinate - (float)m_minutes) * 60;
+    double temp_seconds = (t_decimal_coordinate - (double)m_minutes) * 60;
     m_seconds = (int8_t)trunc(temp_seconds);
 
-    if(t_decimal_coordinate > 0)
+    if(t_decimal_coordinate >= 0)
     {
         m_cardinal_point = GPSLib::NORTH;
     }
@@ -88,7 +88,7 @@ bool GPSLib::Latitude::m_convertFromDecimal(float t_decimal_coordinate)
 bool GPSLib::Latitude::m_validate()
 {
     bool isValid = false;
-    float angle = m_degrees + (m_minutes / 60) + (m_seconds / 3600);
+    double angle = m_degrees + (m_minutes / 60.0) + (m_seconds / 3600.0);
 
     if((angle <= 90.0)&&((m_cardinal_point == GPSLib::NORTH)||(m_cardinal_point == GPSLib::SOUTH)))
     {
