@@ -1,5 +1,5 @@
+#include <cmath>
 #include "gpslib_longitude.h"
-#include "gpslib_data_types.h"
 
 /**
 * a constructor
@@ -45,7 +45,7 @@ int8_t GPSLib::Longitude::getMinutes(){return m_minutes;}
 * Get the seconds of the longitude
 * @return the seconds of the longitude
 */
-int8_t GPSLib::Longitude::getSeconds(){return m_seconds;}
+double GPSLib::Longitude::getSeconds(){return m_seconds;}
 
 /**
 * Get the cardinal point of the longitude
@@ -59,7 +59,7 @@ GPSLib::CardinalPoint GPSLib::Longitude::getCardinalPoint(){return m_cardinal_po
 */
 double GPSLib::Longitude::asDecimal()
 {
-    double decimal_value = m_degrees + (m_minutes / 60) + (m_seconds / 3600);
+    double decimal_value = (double)m_degrees + ((double)m_minutes / 60.0) + (m_seconds / 3600.0);
     if(m_cardinal_point == GPSLib::WEST)
     {
         decimal_value = decimal_value * -1;
@@ -76,13 +76,16 @@ bool GPSLib::Longitude::isValid(){return m_validity;}
 
 bool GPSLib::Longitude::m_convertFromDecimal(double t_decimal_coordinate)
 {
-    m_degrees = (int8_t)trunc(t_decimal_coordinate);
-    double temp_minutes = (t_decimal_coordinate - m_degrees) * 60;
-    m_minutes = (int8_t)trunc(temp_minutes);
-    double temp_seconds = (t_decimal_coordinate - m_minutes) * 60;
-    m_seconds = (int8_t)trunc(temp_seconds);
+    double abs_decimal_coordinate = std::abs(t_decimal_coordinate);
 
-    if(t_decimal_coordinate > 0)
+    m_degrees = (int8_t)trunc(abs_decimal_coordinate);
+    abs_decimal_coordinate -= (double)m_degrees;
+    double temp_minutes = abs_decimal_coordinate * 60.0;
+    m_minutes = (int8_t)trunc(temp_minutes);
+    abs_decimal_coordinate -= (double)m_minutes / 60.0;
+    m_seconds = abs_decimal_coordinate * 3600.0;
+
+    if(t_decimal_coordinate >= 0)
     {
         m_cardinal_point = GPSLib::EAST;
     }

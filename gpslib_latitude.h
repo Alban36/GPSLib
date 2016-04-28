@@ -20,7 +20,7 @@ class Latitude{
         //getters
         int8_t getDegrees();
         int8_t getMinutes();
-        int8_t getSeconds();
+        double getSeconds();
         CardinalPoint getCardinalPoint();
 
         //converter
@@ -36,7 +36,7 @@ class Latitude{
         //Attributes
         int8_t m_degrees;
         int8_t m_minutes;
-        int8_t m_seconds;
+        double m_seconds;
         CardinalPoint m_cardinal_point;
 
         bool m_validity;

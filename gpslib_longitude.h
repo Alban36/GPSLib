@@ -20,7 +20,7 @@ class Longitude{
         //getters
         int8_t getDegrees();
         int8_t getMinutes();
-        int8_t getSeconds();
+        double getSeconds();
         CardinalPoint getCardinalPoint();
 
         //converter
